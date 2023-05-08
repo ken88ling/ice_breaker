@@ -7,13 +7,15 @@ from third_parties.linkedin import scrape_linkedin_profile
 
 
 if __name__ == "__main__":
-    print("Hello Langchain")
+    print("Hello LangChain!")
+
+    linkedin_profile_url = linkedin_lookup_agent(name="Eden Marco Udemy")
 
     summary_template = """
-    given the Linkedin information {information} about a person from I want you to create:
-    1. a short summary
-    2. two interesting facts about them
-    """
+         given the Linkedin information {information} about a person from I want you to create:
+         1. a short summary
+         2. two interesting facts about them
+     """
 
     summary_prompt_template = PromptTemplate(
         input_variables=["information"], template=summary_template
@@ -23,11 +25,6 @@ if __name__ == "__main__":
 
     chain = LLMChain(llm=llm, prompt=summary_prompt_template)
 
-    linkedin_profile_url = linkedin_lookup_agent(name="Eden Marco")
-
-    linkedin_data = scrape_linkedin_profile(
-        # linkedin_profile_url="https://www.linkedin.com/in/harrison-chase-961287118/"
-        linkedin_profile_url=linkedin_profile_url
-    )
+    linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url)
 
     print(chain.run(information=linkedin_data))
